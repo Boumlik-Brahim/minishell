@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_errors.c                                 :+:      :+:    :+:   */
+/*   minishell_utis.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/13 15:44:29 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 21:14:58 by bbrahim          ###   ########.fr       */
+/*   Created: 2022/07/01 19:56:52 by bbrahim           #+#    #+#             */
+/*   Updated: 2022/07/01 20:03:29 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,18 @@
 
 /* -------------------------------------------------------------------------- */
 
-void	ft_handle_error(char *cmd, char *arg, char *error)
+int	ft_tolwr_strcmp(char *s1, char *s2)
 {
-	ft_putstr_fd(cmd, 2);
-	ft_putstr_fd("`", 2);
-	ft_putstr_fd(arg, 2);
-	ft_putstr_fd("':", 2);
-	ft_putstr_fd(error, 2);
-	ft_putendl_fd("", 2);
+	unsigned char	*us1;
+	unsigned char	*us2;
+	int				i;
+
+	us1 = (unsigned char *) s1;
+	us2 = (unsigned char *) s2;
+	i = 0;
+	while (us1[i] && ft_tolower(us1[i]) == ft_tolower(us2[i]))
+		i++;
+	return (us1[i] - us2[i]);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -6,36 +6,11 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 20:21:36 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 18:34:23 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/01 21:25:48 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
-
-/* -------------------------------------------------------------------------- */
-
-void	ft_print_export(t_env *env, char **res)
-{
-	t_env	*current;
-	int		i;
-
-	i = -1;
-	while (res[++i])
-	{
-		current = env;
-		while (current)
-		{
-			if (ft_strcmp(res[i], current->key) == 0)
-			{
-				printf("declare -x %s", current->key);
-				if (current->print == 1)
-					printf("=\"%s\"", current->value);
-				printf("\n");
-			}
-			current = current->next;
-		}
-	}
-}
 
 /* -------------------------------------------------------------------------- */
 
@@ -68,26 +43,29 @@ void	ft_export_env(t_env *env, char *key, char *value, bool p)
 
 /* -------------------------------------------------------------------------- */
 
-int	ft_chk_export(char	*data)
+int	ft_chk_export(t_env *env, char	*data, char	**res)
 {
 	int	i;
 
-	if (*data == '=')
+	if (*data == '#')
+		ft_print_export(env, res);
+	else if (*data == '=')
 		return (EXIT_FAILURE);
-	// if (*data == '#')
-	// 	ft_print_export(env);
-	i = -1;
-	while (data[++i] && data[i] != '=')
+	else
 	{
-		if (!ft_isalpha(data[i]) && data[i] != '_')
-			return (EXIT_FAILURE);
+		i = -1;
+		while (data[++i] && data[i] != '=')
+		{
+			if (!ft_isalpha(data[i]) && data[i] != '_')
+				return (EXIT_FAILURE);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
 
 /* -------------------------------------------------------------------------- */
 
-void	ft_export_key_value(t_env *env, char	**data)
+void	ft_export_key_value(t_env *env, char **data, char **res)
 {
 	int		j;
 	int		i;
@@ -97,7 +75,7 @@ void	ft_export_key_value(t_env *env, char	**data)
 	i = 0;
 	while (data[++i])
 	{
-		if (ft_chk_export(data[i]) == EXIT_SUCCESS)
+		if (ft_chk_export(env, data[i], res) == EXIT_SUCCESS)
 		{
 			j = 0;
 			while (data[i][j] != '=' && data[i][j])
@@ -111,54 +89,8 @@ void	ft_export_key_value(t_env *env, char	**data)
 			else
 				ft_export_env(env, key, value, 0);
 		}
-	}
-}
-
-/* -------------------------------------------------------------------------- */
-
-char	**ft_init_exportab(t_env *env)
-{
-	char	**res;
-	int		lstsize;
-	int		i;
-	t_env	*current;
-
-	lstsize = ft_env_size(env);
-	res = (char **)malloc(sizeof(char *) * (lstsize + 1));
-	if (!res)
-		return (NULL);
-	i = -1;
-	current = env;
-	while (current)
-	{
-		res[++i] = ft_strdup(current->key);
-		current = current->next;
-	}
-	res[i] = NULL;
-	return (res);
-}
-
-/* -------------------------------------------------------------------------- */
-
-void	ft_sort_exportab(char **res)
-{
-	char	*tmp;
-	int		i;
-	int		j;
-
-	i = -1;
-	while (res[++i])
-	{
-		j = -1;
-		while (res[++j])
-		{
-			if (ft_strcmp(res[j], res[i]) > 0)
-			{
-				tmp = res[i];
-				res[i] = res[j];
-				res[j] = tmp;
-			}
-		}
+		else
+			ft_handle_error("minishell: export: ", data[i], EXPORT_ERROR);
 	}
 }
 
@@ -175,7 +107,8 @@ int	ft_export(t_env *env, char	**data)
 		ft_print_export(env, res);
 		return (EXIT_SUCCESS);
 	}
-	// ft_export_key_value(env, data);
+	ft_export_key_value(env, data, res);
+	free_tab(res);
 	return (EXIT_SUCCESS);
 }
 

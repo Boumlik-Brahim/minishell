@@ -14,9 +14,9 @@ HEADER = minishell.h
 
 # execution part
 
-BUILTINS =  env export unset echo cd pwd exit
+BUILTINS =  env export export-utils unset echo cd pwd exit
 
-EXEC = minishell_errors minishell_free execute nonbuiltins pipes redirections signals
+EXEC = minishell_errors minishell_free minishell_utis execute nonbuiltins pipes redirections signals
 
 # parsing part -fsanitize=address -static-libsan -I ./ -I libft/ 
 

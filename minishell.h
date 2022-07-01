@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 13:32:10 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 17:42:32 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/01 21:11:21 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define EXIT_ERROR ": numeric argument required"
 # define CD_ERROR "cd: error retrieving current \
 directory: getcwd: cannot access parent directories"
+# define EXPORT_ERROR " not a valid identifier"
 /* ---------------------------------- TypeDefs ------------------------------ */
 typedef enum s_type
 {
@@ -92,7 +93,6 @@ t_env	*ft_envnew(char *key, char *value, bool print); //
 char	*ft_get_keys(char *str, int c);
 void	ft_create_env(t_env **list, char **env);
 char	*ft_getenv(t_env *env, char *buffer);
-void	ft_free_env(t_env *head, char error);
 
 /*-------------------------------- Lexer -------------------------------------*/
 
@@ -153,6 +153,10 @@ void	process_data_util(t_shell **shell, t_token **token, t_env *env);
 char	process_data(t_shell **shell, t_token *token, t_env *env);
 
 /*-------------------------------- Executer ----------------------------------*/
+void	ft_free_env(t_env *head, char error);
+void	free_tab(char	**res);
+
+int		ft_tolwr_strcmp(char *s1, char *s2);
 
 void	ft_handle_error(char *cmd, char *arg, char *error);
 
@@ -160,10 +164,12 @@ void	ft_env_shlvl(t_env *env, char operator);
 void	ft_empty_env(t_env **env);
 int		ft_env(t_env *env);
 
+char	**ft_init_exportab(t_env *env);
+void	ft_sort_exportab(char **res);
 void	ft_print_export(t_env *env, char **res);
 void	ft_export_env(t_env *env, char *key, char *value, bool p);
-int		ft_chk_export(char	*data);
-void	ft_export_key_value(t_env *env, char	**data);
+int		ft_chk_export(t_env *env, char	*data, char	**res);
+void	ft_export_key_value(t_env *env, char **data, char **res);
 int		ft_export(t_env	*env, char	**data);
 
 void	ft_delete_env(t_env	*current, t_env	*next);
@@ -192,7 +198,6 @@ void	ft_sigint_handler(int signal);
 void	ft_sigquit_handler(int signal);
 void	ft_eof(t_env *env);
 
-int		ft_tolwr_strcmp(char *s1, char *s2);
 int		ft_isbuiltin(char	**data);
 int		ft_exec_builtin(t_env	*env, char	**data);
 char	**ft_env_table(t_env *env);

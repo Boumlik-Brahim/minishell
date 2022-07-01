@@ -6,27 +6,11 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 18:13:33 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 13:39:18 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/01 19:57:12 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-/* -------------------------------------------------------------------------- */
-
-int	ft_tolwr_strcmp(char *s1, char *s2)
-{
-	unsigned char	*us1;
-	unsigned char	*us2;
-	int				i;
-
-	us1 = (unsigned char *) s1;
-	us2 = (unsigned char *) s2;
-	i = 0;
-	while (us1[i] && ft_tolower(us1[i]) == ft_tolower(us2[i]))
-		i++;
-	return (us1[i] - us2[i]);
-}
 
 /* -------------------------------------------------------------------------- */
 

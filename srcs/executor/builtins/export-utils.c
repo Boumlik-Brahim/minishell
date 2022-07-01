@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
+/*   export-utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/12 11:22:34 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 21:37:19 by bbrahim          ###   ########.fr       */
+/*   Created: 2022/07/01 19:51:27 by bbrahim           #+#    #+#             */
+/*   Updated: 2022/07/01 19:57:41 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,67 +14,74 @@
 
 /* -------------------------------------------------------------------------- */
 
-void	ft_delete_env(t_env	*current, t_env	*next)
+char	**ft_init_exportab(t_env *env)
 {
-	current->next = next->next;
-	if (next->key)
-		free(next->key);
-	if (next->value)
-		free(next->value);
-	free(next);
-}
+	char	**res;
+	int		lstsize;
+	int		i;
+	t_env	*current;
 
-/* -------------------------------------------------------------------------- */
-
-void	ft_unset_env(t_env *env, char *data)
-{
-	t_env	*current;	
-
+	lstsize = ft_env_size(env);
+	res = (char **)malloc(sizeof(char *) * (lstsize + 1));
+	if (!res)
+		return (NULL);
+	i = -1;
 	current = env;
 	while (current)
 	{
-		if (current->next != NULL)
-		{
-			if (ft_strcmp(current->next->key, data) == 0)
-			{
-				ft_delete_env(current, current->next);
-				return ;
-			}
-		}
+		res[++i] = ft_strdup(current->key);
 		current = current->next;
 	}
+	res[i] = NULL;
+	return (res);
 }
 
 /* -------------------------------------------------------------------------- */
 
-int	ft_chk_unset(char	*data)
+void	ft_sort_exportab(char **res)
 {
-	int	i;
+	char	*tmp;
+	int		i;
+	int		j;
 
 	i = -1;
-	while (data[++i])
+	while (res[++i])
 	{
-		if (!ft_isalpha(data[i]) && data[i] != '_')
-			return (EXIT_FAILURE);
+		j = -1;
+		while (res[++j])
+		{
+			if (ft_strcmp(res[j], res[i]) > 0)
+			{
+				tmp = res[i];
+				res[i] = res[j];
+				res[j] = tmp;
+			}
+		}
 	}
-	return (EXIT_SUCCESS);
 }
-
 /* -------------------------------------------------------------------------- */
 
-int	ft_unset(t_env *env, char **data)
+void	ft_print_export(t_env *env, char **res)
 {
-	int	i;
+	t_env	*current;
+	int		i;
 
-	i = 0;
-	while (data[++i])
+	i = -1;
+	while (res[++i])
 	{
-		if (data[i][0] == '_' && data[i][1] == '\0')
-			return (EXIT_FAILURE);
-		if (ft_chk_unset(data[i]) == EXIT_SUCCESS)
-			ft_unset_env(env, data[i]);
+		current = env;
+		while (current)
+		{
+			if (ft_strcmp(res[i], current->key) == 0)
+			{
+				printf("declare -x %s", current->key);
+				if (current->print == 1)
+					printf("=\"%s\"", current->value);
+				printf("\n");
+			}
+			current = current->next;
+		}
 	}
-	return (EXIT_SUCCESS);
 }
 
 /* -------------------------------------------------------------------------- */
