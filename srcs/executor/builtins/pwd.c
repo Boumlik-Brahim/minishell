@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:30:53 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/06/29 13:44:32 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 20:37:35 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ int	ft_pwd(char	**data)
 	char	cwd[PATH_MAX];
 
 	if (!data[1])
+	{
+		getcwd(cwd, PATH_MAX);
+		printf("%s\n", cwd);
+	}
+	else
 	{
 		getcwd(cwd, PATH_MAX);
 		printf("%s\n", cwd);

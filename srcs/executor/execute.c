@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:17:44 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 15:07:07 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 23:07:18 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ void	ft_dup(t_shell *shell, int in_fd, int *fd, int i)
 
 int	ft_ms_backbone(t_env **env, t_shell *shell, t_data *data)
 {
+	int	def_in;
+	int	def_out;
+
+	def_in = dup(STDIN_FILENO);
+	def_out = dup(STDOUT_FILENO);
 	data->in_fd = 0;
 	while (shell)
 	{

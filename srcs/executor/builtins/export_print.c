@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 19:51:27 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 19:08:14 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 20:19:15 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	ft_print_export(t_env *env)
 			if (ft_strcmp(res[i], current->key) == 0)
 			{
 				printf("declare -x %s", current->key);
-				if (current->print == 1)
+				if (current->print == 1 && current->value)
 					printf("=\"%s\"", current->value);
 				printf("\n");
 			}

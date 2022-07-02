@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 13:32:10 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 19:02:16 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 22:43:47 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define EXIT_ERROR ": numeric argument required"
 # define CD_ERROR "cd: error retrieving current \
 directory: getcwd: cannot access parent directories"
+# define CHDIR_ERROR " No such file or directory"
 # define EXPORT_ERROR " not a valid identifier"
 /* ---------------------------------- TypeDefs ------------------------------ */
 typedef enum s_type
@@ -158,6 +159,7 @@ void	free_tab(char	**res);
 
 int		ft_tolwr_strcmp(char *s1, char *s2);
 
+void	ft_handle_errorcd(char *cmd, char *arg, char *error);
 void	ft_handle_error(char *cmd, char *arg, char *error);
 
 void	ft_env_shlvl(t_env *env, char operator);
@@ -168,7 +170,11 @@ char	**ft_init_exportab(t_env *env);
 void	ft_sort_exportab(char **res);
 void	ft_print_export(t_env *env);
 void	ft_export_env(t_env **env, char	*data, int j, int p);
+void	ft_add_value(t_env **env, char	*data, int j);
+void	ft_join_value(t_env **env, char	*data, int j);
+int		ft_srch_key(t_env *env, char	*data, int j);
 int		ft_chk_export(t_env **env, char	*data);
+void	ft_export_env(t_env **env, char	*data, int j, int p);
 void	ft_export_key_value(t_env **env, char **data);
 int		ft_export(t_env	**env, char	**data);
 
@@ -183,7 +189,7 @@ int		ft_cd(t_env *env, char **data);
 uint8_t	ft_exit_atoi(const char *str);
 void	ft_chk_exit_args(char **data);
 int		ft_chk_exit(char *data);
-int		ft_exit(t_env *env, char **data);
+void	ft_exit(t_env *env, char **data);
 
 int		ft_pwd(char	**data);
 

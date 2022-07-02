@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:28:15 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/06/29 18:35:02 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 21:16:06 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,15 @@ int	ft_chk_exit(char *data)
 
 /* -------------------------------------------------------------------------- */
 
-int	ft_exit(t_env *env, char **data)
+void	ft_exit(t_env *env, char **data)
 {
 	ft_env_shlvl(env, '-');
 	printf("exit\n");
 	if (!data[1])
+	{
 		g_state.exit_state = EXIT_SUCCESS;
+		exit(g_state.exit_state);
+	}
 	if (data[1] != NULL)
 	{
 		if (ft_chk_exit(data[1]) == EXIT_SUCCESS)
@@ -102,9 +105,10 @@ int	ft_exit(t_env *env, char **data)
 		{
 			ft_handle_error("minishell$>: exit: ", data[1], EXIT_ERROR);
 			g_state.exit_state = 255;
+			exit (g_state.exit_state);
 		}
 	}
-	return (g_state.exit_state);
+	exit (g_state.exit_state);
 }
 
 /* -------------------------------------------------------------------------- */

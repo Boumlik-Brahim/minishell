@@ -2,7 +2,8 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror \
+CFLAGS = -fsanitize=address -static-libsan -I ./ -I libft/ \
+		-Wall -Wextra -Werror \
 
 READLFLAGS = -L $(shell brew --prefix readline)/lib -lreadline \
     -L $(shell brew --prefix readline)/lib -lhistory \
@@ -14,9 +15,9 @@ HEADER = minishell.h
 
 # execution part
 
-BUILTINS =  env export export-utils unset echo cd pwd exit
+BUILTINS =  env export export_print export_chk unset echo cd pwd exit
 
-EXEC = minishell_errors minishell_free minishell_utis execute nonbuiltins pipes redirections signals
+EXEC = minishell_errors minishell_free minishell_utis execute backbone redirections signals
 
 # parsing part -fsanitize=address -static-libsan -I ./ -I libft/ 
 

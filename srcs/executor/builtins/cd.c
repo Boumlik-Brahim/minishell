@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:30:10 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 15:33:08 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 21:11:00 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ int	ft_cd(t_env *env, char **data)
 	if (data[1] != NULL)
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)
-			perror("getcwd");
+			return (EXIT_FAILURE);
 		ft_cd_oldwd(env, cwd);
 		if (chdir(data[1]) == -1)
-			return (EXIT_FAILURE);
+			ft_handle_errorcd("minishell$>: cd: ", data[1], CHDIR_ERROR);
 		if (getcwd(cwd, PATH_MAX) == NULL)
 			perror(CD_ERROR);
 		ft_cd_wd(env, cwd);
