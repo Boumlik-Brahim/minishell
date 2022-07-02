@@ -30,16 +30,16 @@
 
 /*----------------------------------------------------------------------------*/
 
-t_shell	*parser(char *line, t_env	*env)
+t_shell	*parser(char *line, t_env	**env)
 {
 	t_token	*token;
 	t_shell	*shell;
 	t_data	data;
 
-	token = lexer(line, env);
+	token = lexer(line, *env);
 	if (!token)
 		return (NULL);
-	if (process_data(&shell, token, env))
+	if (process_data(&shell, token, *env))
 		return (NULL);
 	// print_node(shell);
 	ft_ms_backbone(env, shell, &data);

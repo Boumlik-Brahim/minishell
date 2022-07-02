@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 19:51:27 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 19:57:41 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 19:08:14 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	**ft_init_exportab(t_env *env)
 	t_env	*current;
 
 	lstsize = ft_env_size(env);
-	res = (char **)malloc(sizeof(char *) * (lstsize + 1));
+	res = (char **)ft_calloc((lstsize + 1), sizeof(char *));
 	if (!res)
 		return (NULL);
 	i = -1;
@@ -32,7 +32,6 @@ char	**ft_init_exportab(t_env *env)
 		res[++i] = ft_strdup(current->key);
 		current = current->next;
 	}
-	res[i] = NULL;
 	return (res);
 }
 
@@ -61,11 +60,14 @@ void	ft_sort_exportab(char **res)
 }
 /* -------------------------------------------------------------------------- */
 
-void	ft_print_export(t_env *env, char **res)
+void	ft_print_export(t_env *env)
 {
 	t_env	*current;
+	char	**res;
 	int		i;
 
+	res = ft_init_exportab(env);
+	ft_sort_exportab(res);
 	i = -1;
 	while (res[++i])
 	{
@@ -82,6 +84,7 @@ void	ft_print_export(t_env *env, char **res)
 			current = current->next;
 		}
 	}
+	free_tab(res);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 11:22:34 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 21:37:19 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 15:32:19 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,32 @@
 
 /* -------------------------------------------------------------------------- */
 
-void	ft_delete_env(t_env	*current, t_env	*next)
+void	ft_unset_env(t_env **env, char *data)
 {
-	current->next = next->next;
-	if (next->key)
-		free(next->key);
-	if (next->value)
-		free(next->value);
-	free(next);
-}
+	t_env	*tmp;
+	t_env	*current;
 
-/* -------------------------------------------------------------------------- */
-
-void	ft_unset_env(t_env *env, char *data)
-{
-	t_env	*current;	
-
-	current = env;
-	while (current)
+	if (ft_strcmp((*env)->key, data) == 0)
 	{
-		if (current->next != NULL)
+		tmp = *env;
+		*env = (*env)->next;
+		free(tmp);
+	}
+	else
+	{
+		current = *env;
+		while (current->next != NULL)
 		{
 			if (ft_strcmp(current->next->key, data) == 0)
 			{
-				ft_delete_env(current, current->next);
-				return ;
+				tmp = current->next;
+				current->next = current->next->next;
+				free(tmp);
+				break ;
 			}
+			else
+				current = current->next;
 		}
-		current = current->next;
 	}
 }
 
@@ -51,6 +49,8 @@ int	ft_chk_unset(char	*data)
 {
 	int	i;
 
+	if (data[0] == '_' && data[1] == '\0')
+		return (EXIT_FAILURE);
 	i = -1;
 	while (data[++i])
 	{
@@ -62,15 +62,13 @@ int	ft_chk_unset(char	*data)
 
 /* -------------------------------------------------------------------------- */
 
-int	ft_unset(t_env *env, char **data)
+int	ft_unset(t_env **env, char **data)
 {
 	int	i;
 
 	i = 0;
 	while (data[++i])
 	{
-		if (data[i][0] == '_' && data[i][1] == '\0')
-			return (EXIT_FAILURE);
 		if (ft_chk_unset(data[i]) == EXIT_SUCCESS)
 			ft_unset_env(env, data[i]);
 	}

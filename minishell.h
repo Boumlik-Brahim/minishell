@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 13:32:10 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 21:11:21 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 19:02:16 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char	shelladd_back(t_shell **shell, t_shell *new);
 int		shell_size(t_shell *shell);
 t_shell	*shell_new(int token, char *data, char **switchs, int file);
 t_shell	*shell_last(t_shell *shell);
-t_shell	*parser(char *line, t_env	*env);
+t_shell	*parser(char *line, t_env	**env);
 
 /*-------------------------------- Lexer ------------------------------------*/
 
@@ -166,16 +166,15 @@ int		ft_env(t_env *env);
 
 char	**ft_init_exportab(t_env *env);
 void	ft_sort_exportab(char **res);
-void	ft_print_export(t_env *env, char **res);
-void	ft_export_env(t_env *env, char *key, char *value, bool p);
-int		ft_chk_export(t_env *env, char	*data, char	**res);
-void	ft_export_key_value(t_env *env, char **data, char **res);
-int		ft_export(t_env	*env, char	**data);
+void	ft_print_export(t_env *env);
+void	ft_export_env(t_env **env, char	*data, int j, int p);
+int		ft_chk_export(t_env **env, char	*data);
+void	ft_export_key_value(t_env **env, char **data);
+int		ft_export(t_env	**env, char	**data);
 
-void	ft_delete_env(t_env	*current, t_env	*next);
-void	ft_unset_env(t_env *env, char *data);
+void	ft_unset_env(t_env **env, char *data);
 int		ft_chk_unset(char	*data);
-int		ft_unset(t_env *env, char **data);
+int		ft_unset(t_env **env, char **data);
 
 void	ft_cd_oldwd(t_env *env, char *oldwd);
 void	ft_cd_wd(t_env *env, char *cwd);
@@ -199,10 +198,10 @@ void	ft_sigquit_handler(int signal);
 void	ft_eof(t_env *env);
 
 int		ft_isbuiltin(char	**data);
-int		ft_exec_builtin(t_env	*env, char	**data);
+int		ft_exec_builtin(t_env	**env, char	**data);
 char	**ft_env_table(t_env *env);
 int		ft_executecmd(t_shell *shell, char	**env_tab);
 
-int		ft_ms_backbone(t_env	*env, t_shell	*shell, t_data *data);
+int		ft_ms_backbone(t_env	**env, t_shell	*shell, t_data *data);
 /*-------------------------------- Executer ----------------------------------*/
 #endif

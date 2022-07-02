@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 02:38:45 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/06/30 17:43:33 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/02 15:02:07 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int ac, char **av, char **main_env)
 			}
 			if (line[0] != '\0')
 				add_history(line);
-			shell = parser(line, env);
+			shell = parser(line, &env);
 			if (!shell)
 				ft_putstr_fd("\033[1;31mSyntax error\033[0m\n", 2);
 		}
