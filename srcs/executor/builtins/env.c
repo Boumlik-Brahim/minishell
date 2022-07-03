@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 20:21:15 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/01 18:17:33 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/03 21:28:14 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	ft_env(t_env *env)
 	current = env;
 	while (current)
 	{
-		if (current->print == 1)
+		if (current->print == 1 && current->value)
 			printf("%s=%s\n", current->key, current->value);
 		current = current->next;
 	}

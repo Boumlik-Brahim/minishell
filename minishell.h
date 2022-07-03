@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 13:32:10 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 22:43:47 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/03 23:03:54 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ typedef struct s_data
 {
 	char	**env_tab;
 	int		in_fd;
+	int		in_def;
+	int		out_def;
 	int		pid;
 	int		fd[2];
 }	t_data;
@@ -197,11 +199,11 @@ void	ft_print_echo(char	**data, int *i);
 int		ft_chk_echo(char	*data);
 int		ft_echo(char	**data);
 
-void	ft_heredoc(char *delimiter);
+void	ft_heredoc(char *delimiter, t_data *data); //
 
-void	ft_sigint_handler(int signal);
-void	ft_sigquit_handler(int signal);
-void	ft_eof(t_env *env);
+void	ft_sigint_handler(int signal); //
+void	ft_sigquit_handler(int signal); //
+void	ft_eof(t_env *env); //
 
 int		ft_isbuiltin(char	**data);
 int		ft_exec_builtin(t_env	**env, char	**data);

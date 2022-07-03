@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 02:38:45 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/02 15:02:07 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/03 16:43:06 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	main(int ac, char **av, char **main_env)
 	{
 		ft_create_env(&env, main_env);
 		g_state.exit_state = 0;
+		g_state.forked = false;
 		signal(SIGINT, &ft_sigint_handler);
 		signal(SIGQUIT, &ft_sigquit_handler);
 		rl_catch_signals = 0;

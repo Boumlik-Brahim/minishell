@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/24 18:49:36 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/06/30 18:10:01 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/03 23:00:10 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	ft_sigquit_handler(int signal)
 
 void	ft_eof(t_env *env)
 {
+	g_state.exit_state = 0;
 	ft_env_shlvl(env, '-');
 	rl_replace_line("", 1);
 	ft_putstr_fd("exit\n", 1);
