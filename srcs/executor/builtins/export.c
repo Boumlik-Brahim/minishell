@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 20:21:36 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 22:23:50 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/04 13:54:07 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,10 @@ void	ft_export_key_value(t_env **env, char **data)
 			ft_export_cases(env, data[i], &j);
 		}
 		else
+		{
 			ft_handle_error("minishell: export: ", data[i], EXPORT_ERROR);
+			g_state.exit_state = 1;
+		}
 	}
 }
 
@@ -68,10 +71,10 @@ int	ft_export(t_env **env, char	**data)
 	if (!data[1])
 	{
 		ft_print_export(*env);
-		return (EXIT_SUCCESS);
+		return (g_state.exit_state);
 	}
 	ft_export_key_value(env, data);
-	return (EXIT_SUCCESS);
+	return (g_state.exit_state);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 02:38:45 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/03 16:43:06 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:47:06 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,16 @@ int	main(int ac, char **av, char **main_env)
 
 	if (ft_strcmp(av[0], "./minishell") == 0 && ac == 1)
 	{
+		g_state.empty_env = false;
 		ft_create_env(&env, main_env);
-		g_state.exit_state = 0;
+		g_state.exit_state = EXIT_SUCCESS;
 		g_state.forked = false;
 		signal(SIGINT, &ft_sigint_handler);
 		signal(SIGQUIT, &ft_sigquit_handler);
-		rl_catch_signals = 0;
+		// rl_catch_signals = 0;
 		while (1)
 		{
-			line = readline("\033[0;32mminishell$> \033[0m");
+			line = readline("minishell$> ");
 			if (line == NULL)
 			{
 				ft_eof(env);

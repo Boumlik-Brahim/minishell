@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/29 13:32:10 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/03 23:03:54 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/04 18:36:30 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <signal.h>
 # include <limits.h>
 # include <string.h>
+# include <paths.h>
+# include <termios.h>
 # include "./libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -82,6 +84,7 @@ typedef struct s_data
 typedef struct s_global
 {
 	int		exit_state;
+	bool	empty_env;
 	bool	forked;
 }	t_global;
 
@@ -208,7 +211,7 @@ void	ft_eof(t_env *env); //
 int		ft_isbuiltin(char	**data);
 int		ft_exec_builtin(t_env	**env, char	**data);
 char	**ft_env_table(t_env *env);
-int		ft_executecmd(t_shell *shell, char	**env_tab);
+void	ft_executecmd(t_shell *shell, char	**env_tab);
 
 int		ft_ms_backbone(t_env	**env, t_shell	*shell, t_data *data);
 /*-------------------------------- Executer ----------------------------------*/

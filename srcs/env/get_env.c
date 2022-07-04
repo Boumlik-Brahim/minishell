@@ -62,6 +62,7 @@ void	ft_create_env(t_env **list, char **env)
 	value = NULL;
 	if (env[0] == NULL)
 	{
+		g_state.empty_env = true;
 		ft_empty_env(list);
 		return ;
 	}

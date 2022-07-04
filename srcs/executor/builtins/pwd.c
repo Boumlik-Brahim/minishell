@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:30:53 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 20:37:35 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/04 13:51:43 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	ft_pwd(char	**data)
 		getcwd(cwd, PATH_MAX);
 		printf("%s\n", cwd);
 	}
-	return (EXIT_SUCCESS);
+	return (g_state.exit_state);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export-utils.c                                     :+:      :+:    :+:   */
+/*   export_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 19:51:27 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 20:19:15 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/04 14:44:18 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,17 @@ void	ft_print_export(t_env *env)
 		current = env;
 		while (current)
 		{
-			if (ft_strcmp(res[i], current->key) == 0)
+			if (!ft_strcmp(res[i], current->key) && g_state.empty_env == true)
+			{
+				if (ft_strcmp(current->key, "PATH") && ft_strcmp(current->key, "_"))
+				{
+					printf("declare -x %s", current->key);
+					if (current->print == 1 && current->value)
+						printf("=\"%s\"", current->value);
+					printf("\n");
+				}
+			}
+			else if (!ft_strcmp(res[i], current->key))
 			{
 				printf("declare -x %s", current->key);
 				if (current->print == 1 && current->value)

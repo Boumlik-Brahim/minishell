@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:28:15 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 21:16:06 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/04 14:54:19 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,13 @@ void	ft_chk_exit_args(char **data)
 	{
 		ft_putstr_fd("minishell$>: exit: too many arguments\n", 2);
 		g_state.exit_state = EXIT_FAILURE;
+		exit (g_state.exit_state);
 	}
 	else
 	{
 		ex_stat = ft_exit_atoi(data[1]);
 		g_state.exit_state = ex_stat;
+		exit (g_state.exit_state);
 	}
 }
 
@@ -97,7 +99,7 @@ void	ft_exit(t_env *env, char **data)
 		g_state.exit_state = EXIT_SUCCESS;
 		exit(g_state.exit_state);
 	}
-	if (data[1] != NULL)
+	else if (data[1] != NULL)
 	{
 		if (ft_chk_exit(data[1]) == EXIT_SUCCESS)
 			ft_chk_exit_args(data);
@@ -108,7 +110,6 @@ void	ft_exit(t_env *env, char **data)
 			exit (g_state.exit_state);
 		}
 	}
-	exit (g_state.exit_state);
 }
 
 /* -------------------------------------------------------------------------- */
