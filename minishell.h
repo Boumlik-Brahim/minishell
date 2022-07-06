@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 01:42:17 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/06 02:01:45 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 22:26:49 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ int		ft_tolwr_strcmp(char *s1, char *s2);
 void	ft_handle_errorcd(char *cmd, char *arg, char *error);
 void	ft_handle_error(char *cmd, char *arg, char *error);
 
+char	**ft_env_table(t_env *env);
 void	ft_env_shlvl(t_env *env, char operator);
 void	ft_empty_env(t_env **env);
 int		ft_env(t_env *env);
@@ -227,19 +228,23 @@ void	ft_print_echo(char	**data, int *i);
 int		ft_chk_echo(char	*data);
 int		ft_echo(char	**data);
 
-void	ft_heredoc(char *delimiter, t_data *data);
-
 void	hide_ctrl_char(void);
 void	restore_ctrl_char(void);
-
 void	ft_sig_handler(int signal);
 void	ft_eof(t_env *env);
 
+void	ft_heredoc(char *delimiter, t_data *data);
+
+int		ft_is_only_builtin(t_shell *shell);
 int		ft_isbuiltin(char	**data);
 int		ft_exec_builtin(t_env	**env, char	**data);
-char	**ft_env_table(t_env *env);
-void	ft_executecmd(t_shell *shell, char	**env_tab);
 
+void	ft_wait_process(t_data *data);
+void	ft_executecmd(t_shell *shell, char	**env_tab);
+void	ft_subforkcmd(t_env **env, t_shell *shell, t_data *data);
+void	ft_forkcmd(t_env **env, t_shell *shell, t_data *data);
+void	ft_sample_cmd(t_env **env, t_shell *shell, t_data *data);
+void	ft_sample_cmd_builtin(t_env **env, t_shell *shell, t_data *data);
 int		ft_ms_backbone(t_env	**env, t_shell	*shell, t_data *data);
 /*-------------------------------- Executer ----------------------------------*/
 

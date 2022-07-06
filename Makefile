@@ -20,8 +20,7 @@ NAME = minishell
 
 CC = cc
 
-CFLAGS = -fsanitize=address -static-libsan -I ./ -I libft/ \
-		-Wall -Wextra -Werror \
+CFLAGS =  -Wall -Wextra -Werror -g
 
 MAIN = minishell
 
@@ -38,7 +37,7 @@ HEADER = minishell.h
 # execution part
 BUILTINS =  env export export_print export_utils unset echo cd pwd exit
 
-EXEC = minishell_errors minishell_free minishell_utis execute backbone heredoc signals
+EXEC = builtin_chk execute backbone heredoc signals minishell_errors minishell_free minishell_utis 
 
 ENV = get_env get_env_util
 

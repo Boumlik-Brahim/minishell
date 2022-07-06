@@ -6,11 +6,20 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 11:22:34 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/05 21:05:03 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 22:35:26 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
+
+/* -------------------------------------------------------------------------- */
+
+static void	ft_free_tmp(t_env	*tmp)
+{
+	free(tmp->key);
+	free(tmp->value);
+	free(tmp);
+}
 
 /* -------------------------------------------------------------------------- */
 
@@ -23,7 +32,7 @@ void	ft_unset_env(t_env **env, char *data)
 	{
 		tmp = *env;
 		*env = (*env)->next;
-		free(tmp);
+		ft_free_tmp(tmp);
 	}
 	else
 	{
@@ -34,7 +43,7 @@ void	ft_unset_env(t_env **env, char *data)
 			{
 				tmp = current->next;
 				current->next = current->next->next;
-				free(tmp);
+				ft_free_tmp(tmp);
 				break ;
 			}
 			else
@@ -66,17 +75,20 @@ int	ft_unset(t_env **env, char **data)
 {
 	int	i;
 
-	if (data[1][0] == '_')
-		return (EXIT_SUCCESS);
-	i = 0;
-	while (data[++i])
+	if (data[1] != NULL)
 	{
-		if (ft_chk_unset(data[i]) == EXIT_SUCCESS)
-			ft_unset_env(env, data[i]);
-		else
+		if (data[1][0] == '_')
+			return (EXIT_SUCCESS);
+		i = 0;
+		while (data[++i])
 		{
-			ft_handle_error("minishell: unset: ", data[i], EXPORT_ERROR);
-			g_state.exit_state = 1;
+			if (ft_chk_unset(data[i]) == EXIT_SUCCESS)
+				ft_unset_env(env, data[i]);
+			else
+			{
+				ft_handle_error("minishell: unset: ", data[i], EXPORT_ERROR);
+				g_state.exit_state = 1;
+			}
 		}
 	}
 	return (g_state.exit_state);

@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 20:21:36 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/05 20:46:13 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 20:38:27 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,13 @@ int	ft_srch_key(t_env *env, char	*data, int j)
 	while (current)
 	{
 		if (ft_strcmp(current->key, key) == 0)
+		{
+			free(key);
 			return (EXIT_SUCCESS);
+		}
 		current = current->next;
 	}
+	free(key);
 	return (EXIT_FAILURE);
 }
 

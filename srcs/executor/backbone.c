@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 18:13:33 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/05 22:48:41 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 22:26:25 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,44 @@
 
 /* -------------------------------------------------------------------------- */
 
-int	ft_isbuiltin(char	**data)
+void	ft_subforkcmd(t_env **env, t_shell *shell, t_data *data)
 {
-	if (ft_tolwr_strcmp(data[0], "env") == 0)
-		return (EXIT_SUCCESS);
-	else if (ft_tolwr_strcmp(data[0], "pwd") == 0)
-		return (EXIT_SUCCESS);
-	else if (ft_tolwr_strcmp(data[0], "echo") == 0)
-		return (EXIT_SUCCESS);
-	else if (ft_tolwr_strcmp(data[0], "cd") == 0)
-		return (EXIT_SUCCESS);
-	else if (ft_strcmp(data[0], "export") == 0)
-		return (EXIT_SUCCESS);
-	else if (ft_strcmp(data[0], "unset") == 0)
-		return (EXIT_SUCCESS);
-	else if (ft_strcmp(data[0], "exit") == 0)
-		return (EXIT_SUCCESS);
-	return (EXIT_FAILURE);
+	dup2(data->in_fd, 0);
+	if (shell->prev && shell->prev->token == RED_OUT)
+		dup2(shell->prev->file, 1);
+	else if (shell->next && shell->next->token == PIPE)
+		dup2(data->fd[1], 1);
+	if (!ft_isbuiltin(shell->switchs))
+	{
+		ft_exec_builtin(env, shell->switchs);
+		exit (0);
+	}
+	else
+	{
+		data->env_tab = ft_env_table(*env);
+		close(data->fd[0]);
+		close(data->fd[1]);
+		ft_executecmd(shell, data->env_tab);
+	}
 }
 
 /* -------------------------------------------------------------------------- */
 
-int	ft_exec_builtin(t_env	**env, char	**data)
+int	ft_ms_backbone(t_env **env, t_shell *shell, t_data *data)
 {
-	if (ft_tolwr_strcmp(data[0], "env") == 0)
-		g_state.exit_state = ft_env(*env);
-	else if (ft_tolwr_strcmp(data[0], "pwd") == 0)
-		g_state.exit_state = ft_pwd(data);
-	else if (ft_tolwr_strcmp(data[0], "echo") == 0)
-		g_state.exit_state = ft_echo(data);
-	else if (ft_tolwr_strcmp(data[0], "cd") == 0)
-		g_state.exit_state = ft_cd(*env, data);
-	else if (ft_strcmp(data[0], "export") == 0)
-		g_state.exit_state = ft_export(env, data);
-	else if (ft_strcmp(data[0], "unset") == 0)
-		g_state.exit_state = ft_unset(env, data);
-	else if (ft_strcmp(data[0], "exit") == 0)
-		ft_exit(*env, data);
-	return (g_state.exit_state);
+	data->valid = 0;
+	data->in_fd = 0;
+	data->in_def = dup(STDIN_FILENO);
+	data->out_def = dup(STDOUT_FILENO);
+	if (ft_is_only_builtin(shell) == EXIT_SUCCESS)
+		ft_sample_cmd_builtin(env, shell, data);
+	else
+	{
+		ft_sample_cmd(env, shell, data);
+		g_state.forked = 0;
+	}
+	unlink(".tmp");
+	return (EXIT_SUCCESS);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:30:10 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/05 22:19:44 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 16:34:41 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ void	ft_cd_home(t_env *env, char **data)
 		ft_handle_errorcd("minishell: cd", data[1], CD_HOME_ERROR);
 		g_state.exit_state = 1;
 	}
+	free(str);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -6,31 +6,11 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 20:17:44 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/06 01:56:10 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 22:26:17 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-/* -------------------------------------------------------------------------- */
-
-int	ft_is_only_builtin(t_shell *shell)
-{
-	while (shell)
-	{
-		if (shell->token == CMD)
-		{
-			if (shell->next && shell->next->token == PIPE)
-				return (EXIT_FAILURE);
-			else if (ft_isbuiltin(shell->switchs) == EXIT_SUCCESS)
-				return (EXIT_SUCCESS);
-			else
-				return (EXIT_FAILURE);
-		}
-		shell = shell->next;
-	}
-	return (EXIT_FAILURE);
-}
 
 /* -------------------------------------------------------------------------- */
 
@@ -40,9 +20,15 @@ void	ft_wait_process(t_data *data)
 	signal(SIGQUIT, SIG_IGN);
 	if (waitpid(data->pid, &data->status, 0) > 0)
 	{
-		if (WIFEXITED(data->status))
+		if (WIFSIGNALED(data->status))
+			g_state.exit_state = WTERMSIG(data->status) + 128;
+		else if (WIFEXITED(data->status))
 			g_state.exit_state = WEXITSTATUS(data->status);
 	}
+	close(data->fd[0]);
+	close(data->fd[1]);
+	if (data->in_fd != 0)
+		close(data->in_fd);
 	while (waitpid(-1, NULL, 0) > 0)
 		;
 	signal(SIGINT, &ft_sig_handler);
@@ -73,23 +59,7 @@ void	ft_forkcmd(t_env **env, t_shell *shell, t_data *data)
 	if (data->pid == -1)
 		exit(1);
 	if (data->pid == 0)
-	{
-		dup2(data->in_fd, 0);
-		if (shell->prev && shell->prev->token == RED_OUT)
-			dup2(shell->prev->file, 1);
-		else if (shell->next && shell->next->token == PIPE)
-			dup2(data->fd[1], 1);
-		if (!ft_isbuiltin(shell->switchs))
-		{
-			ft_exec_builtin(env, shell->switchs);
-			exit (0);
-		}
-		else
-		{
-			data->env_tab = ft_env_table(*env);
-			ft_executecmd(shell, data->env_tab);
-		}
-	}
+		ft_subforkcmd(env, shell, data);
 	if (shell->next == NULL && data->pid > 0)
 		ft_wait_process(data);
 }
@@ -129,9 +99,7 @@ void	ft_sample_cmd_builtin(t_env **env, t_shell *shell, t_data *data)
 {
 	while (shell)
 	{
-		if (shell->token == RED_IN)
-			data->in_fd = shell->file;
-		else if (shell->token == CMD
+		if (shell->token == CMD
 			&& !ft_isbuiltin(shell->switchs) && data->valid == 0)
 		{
 			if (shell->prev && shell->prev->token == RED_OUT)
@@ -145,29 +113,15 @@ void	ft_sample_cmd_builtin(t_env **env, t_shell *shell, t_data *data)
 			dup2(data->in_def, 0);
 			dup2(data->out_def, 1);
 		}
+		else if (shell->token == HERE_DOC)
+		{
+			ft_heredoc(shell->data, data);
+			data->in_fd = open(".tmp", O_RDONLY, 00777);
+		}
 		else if (shell->token == INVALID_FILE)
 			data->valid = 1;
 		shell = shell->next;
 	}
-}
-
-/* -------------------------------------------------------------------------- */
-
-int	ft_ms_backbone(t_env **env, t_shell *shell, t_data *data)
-{
-	data->valid = 0;
-	data->in_fd = 0;
-	data->in_def = dup(STDIN_FILENO);
-	data->out_def = dup(STDOUT_FILENO);
-	if (ft_is_only_builtin(shell) == EXIT_SUCCESS)
-		ft_sample_cmd_builtin(env, shell, data);
-	else
-	{
-		ft_sample_cmd(env, shell, data);
-		g_state.forked = 0;
-	}
-	unlink(".tmp");
-	return (EXIT_SUCCESS);
 }
 
 /* -------------------------------------------------------------------------- */

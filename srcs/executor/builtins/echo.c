@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:29:02 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/05 23:34:06 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 11:41:42 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	ft_echo(char	**data)
 	int	i;
 
 	if (!data[1])
-		printf("");
+		ft_putendl_fd("", 1);
 	else if (ft_strcmp(data[1], "$?") == 0)
 		printf("%d\n", g_state.exit_state);
 	else
