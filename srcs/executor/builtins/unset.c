@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 11:22:34 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/06 22:35:26 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 23:23:36 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static void	ft_free_tmp(t_env	*tmp)
 	free(tmp->value);
 	free(tmp);
 }
-
 /* -------------------------------------------------------------------------- */
 
 void	ft_unset_env(t_env **env, char *data)
