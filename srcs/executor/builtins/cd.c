@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/17 11:30:10 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/03 22:37:19 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/05 22:19:44 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,32 +52,55 @@ void	ft_cd_oldwd(t_env *env, char *oldwd)
 
 /* -------------------------------------------------------------------------- */
 
-int	ft_cd(t_env *env, char **data)
+void	ft_cd_home(t_env *env, char **data)
 {
 	char	*str;
+
+	str = ft_getenv(env, "HOME");
+	if (str && *str)
+	{
+		if (chdir(str) == -1)
+		{
+			ft_handle_errorcd("minishell: cd: ", data[1], CHDIR_ERROR);
+			g_state.exit_state = 1;
+		}
+	}
+	else
+	{
+		ft_handle_errorcd("minishell: cd", data[1], CD_HOME_ERROR);
+		g_state.exit_state = 1;
+	}
+}
+
+/* -------------------------------------------------------------------------- */
+
+int	ft_cd(t_env *env, char **data)
+{
 	char	cwd[PATH_MAX];
 
 	if (data[1] != NULL)
 	{
 		if (getcwd(cwd, PATH_MAX) == NULL)
-			ft_handle_errorcd("minishell$>: cd: ", data[1], CHDIR_ERROR);
+		{
+			perror(CD_ERROR);
+			return (g_state.exit_state);
+		}
 		ft_cd_oldwd(env, cwd);
 		if (chdir(data[1]) == -1)
-			ft_handle_errorcd("minishell$>: cd: ", data[1], CHDIR_ERROR);
+		{
+			ft_handle_errorcd("minishell: cd: ", data[1], CHDIR_ERROR);
+			g_state.exit_state = 1;
+		}
 		if (getcwd(cwd, PATH_MAX) == NULL)
+		{
 			perror(CD_ERROR);
+			return (g_state.exit_state);
+		}
 		ft_cd_wd(env, cwd);
 	}
 	else
-	{
-		str = ft_getenv(env, "HOME");
-		if (str && *str)
-		{
-			if (chdir(str) == -1)
-				ft_handle_errorcd("minishell$>: cd: ", data[1], CHDIR_ERROR);
-		}
-	}
-	return (EXIT_SUCCESS);
+		ft_cd_home(env, data);
+	return (g_state.exit_state);
 }
 
 /* -------------------------------------------------------------------------- */

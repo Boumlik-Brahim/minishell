@@ -6,11 +6,30 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 21:29:22 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/02 22:23:59 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/05 20:46:20 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../../minishell.h"
+
+/* -------------------------------------------------------------------------- */
+
+void	ft_join_value(t_env **env, char	*data, int j)
+{
+	t_env	*current;
+	char	*key;
+	char	*value;
+
+	key = ft_substr(data, 0, j);
+	value = ft_strchr(data, '=') + 1;
+	current = *env;
+	while (current)
+	{
+		if (ft_strcmp(current->key, key) == 0)
+			current->value = ft_strjoin(current->value, value);
+		current = current->next;
+	}
+}
 
 /* -------------------------------------------------------------------------- */
 
@@ -55,63 +74,31 @@ void	ft_add_value(t_env **env, char	*data, int j)
 
 /* -------------------------------------------------------------------------- */
 
-void	ft_join_value(t_env **env, char	*data, int j)
+void	ft_export_cases(t_env **env, char *data, int *j)
 {
-	t_env	*current;
-	char	*key;
-	char	*value;
-
-	key = ft_substr(data, 0, j);
-	value = ft_strchr(data, '=') + 1;
-	current = *env;
-	while (current)
+	while (data[*j] && data[*j] != '+' && data[*j] != '=')
+		(*j)++;
+	if (data[*j] == '+' && data[*j + 1] == '=')
 	{
-		if (ft_strcmp(current->key, key) == 0)
-			current->value = ft_strjoin(current->value, value);
-		current = current->next;
+		if (ft_srch_key(*env, data, *j) == EXIT_SUCCESS)
+			ft_join_value(env, data, *j);
+		else
+			ft_export_env(env, data, *j, 1);
 	}
-}
-
-/* -------------------------------------------------------------------------- */
-
-int	ft_srch_key(t_env *env, char	*data, int j)
-{
-	char	*key;
-	t_env	*current;
-
-	key = ft_substr(data, 0, j);
-	current = env;
-	while (current)
+	else if (data[*j] == '=')
 	{
-		if (ft_strcmp(current->key, key) == 0)
-			return (EXIT_SUCCESS);
-		current = current->next;
+		if (ft_srch_key(*env, data, *j) == EXIT_SUCCESS)
+			ft_add_value(env, data, *j);
+		else
+			ft_export_env(env, data, *j, 1);
 	}
-	return (EXIT_FAILURE);
-}
-
-/* -------------------------------------------------------------------------- */
-
-int	ft_chk_export(t_env **env, char	*data)
-{
-	int	i;
-
-	if (data[0] == '#')
-		ft_print_export(*env);
-	else if (!ft_isalpha(data[0]) && data[0] != '_')
-		return (EXIT_FAILURE);
 	else
 	{
-		i = -1;
-		while (data[++i])
-		{
-			if ((data[i] == '+' && data[i + 1] == '=') || (data[i] == '='))
-				return (EXIT_SUCCESS);
-			else if (!ft_isalnum(data[i]) && data[i] != '_')
-				return (EXIT_FAILURE);
-		}
+		if (ft_srch_key(*env, data, *j) == EXIT_SUCCESS)
+			return ;
+		else
+			ft_export_env(env, data, *j, 1);
 	}
-	return (EXIT_SUCCESS);
 }
 
 /* -------------------------------------------------------------------------- */

@@ -1,9 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_word.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/02 23:24:57 by haitkadi          #+#    #+#             */
+/*   Updated: 2022/07/02 23:24:59 by haitkadi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
 /*----------------------------------------------------------------------------*/
 
 char	get_word_util(char **s1, char **s2)
 {
+	if (!*s2)
+		return (0);
 	if (!*s1)
 	{
 		*s1 = ft_strdup(*s2);
@@ -19,14 +33,14 @@ char	get_word_util(char **s1, char **s2)
 
 /*----------------------------------------------------------------------------*/
 
-char get_word(t_token **token, char *line, int *i, t_env *env)
+char	get_word(t_token **token, char *line, int *i, t_env *env)
 {
 	char	*content;
 	char	*result;
- 
+
 	content = NULL;
 	result = NULL;
-	while(ft_isascii(line[*i]) && !ft_strchr("#&();|<> \\`~", line[*i]))
+	while (ft_isascii(line[*i]) && !ft_strchr("| <>", line[*i]))
 	{
 		if (line[*i] == '\"')
 		{
@@ -36,12 +50,14 @@ char get_word(t_token **token, char *line, int *i, t_env *env)
 		else if (line[*i] == '\'')
 			content = word_within_sqoutes(line, i);
 		else if (!check_last(*token, HERE_DOC) && line[*i] == '$' \
-			&& ft_isalnum(line[*i + 1]))
+			&& (ft_isalnum(line[*i +1]) || line[*i +1] == '_'))
 			content = expender(line, i, env);
-		else
+		else if (ft_isascii(line[*i]) && !ft_strchr("| <>", line[*i]))
 			content = word(line, i);
-		get_word_util(&result, &content);
+		if (get_word_util(&result, &content))
+			return (1);
 	}
-	tokenadd_back(token, tokennew(result, WORD));
+	if (result)
+		tokenadd_back(token, tokennew(result, WORD));
 	return (0);
 }

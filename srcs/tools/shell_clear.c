@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokennew.c                                         :+:      :+:    :+:   */
+/*   shell_clear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/03 00:09:42 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/03 00:09:43 by haitkadi         ###   ########.fr       */
+/*   Created: 2022/07/02 23:56:48 by haitkadi          #+#    #+#             */
+/*   Updated: 2022/07/03 00:03:42 by haitkadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_token	*tokennew(char *content, int token)
+void	shell_clear(t_shell **shell)
 {
-	t_token	*temp;
+	t_shell	*head;
+	t_shell	*current;
 
-	temp = (t_token *)malloc(sizeof(t_token));
-	if (!temp)
-		return (NULL);
-	temp->prev = NULL;
-	temp->token = token;
-	temp->content = content;
-	temp->next = NULL;
-	return (temp);
+	if (!*shell)
+		return ;
+	head = *shell;
+	*shell = NULL;
+	while (head != NULL)
+	{
+		current = head;
+		head = head->next;
+		shelldelone(current);
+	}
 }

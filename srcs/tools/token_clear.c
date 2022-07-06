@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokennew.c                                         :+:      :+:    :+:   */
+/*   token_clear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/03 00:09:42 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/03 00:09:43 by haitkadi         ###   ########.fr       */
+/*   Created: 2022/07/03 00:04:04 by haitkadi          #+#    #+#             */
+/*   Updated: 2022/07/03 00:04:05 by haitkadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_token	*tokennew(char *content, int token)
+void	token_clear(t_token **lst)
 {
-	t_token	*temp;
+	t_token	*head;
+	t_token	*current;
 
-	temp = (t_token *)malloc(sizeof(t_token));
-	if (!temp)
-		return (NULL);
-	temp->prev = NULL;
-	temp->token = token;
-	temp->content = content;
-	temp->next = NULL;
-	return (temp);
+	if (!*lst)
+		return ;
+	head = *lst;
+	*lst = NULL;
+	while (head != NULL)
+	{
+		current = head;
+		head = head->next;
+		tokendelone(current);
+	}
 }

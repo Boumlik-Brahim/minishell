@@ -1,27 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokennew.c                                         :+:      :+:    :+:   */
+/*   shelldelone.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/03 00:09:42 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/03 00:09:43 by haitkadi         ###   ########.fr       */
+/*   Created: 2022/07/03 00:03:16 by haitkadi          #+#    #+#             */
+/*   Updated: 2022/07/03 00:03:18 by haitkadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-t_token	*tokennew(char *content, int token)
+static	void	free_2d_array(char	**arr)
 {
-	t_token	*temp;
+	int	i;
 
-	temp = (t_token *)malloc(sizeof(t_token));
-	if (!temp)
-		return (NULL);
-	temp->prev = NULL;
-	temp->token = token;
-	temp->content = content;
-	temp->next = NULL;
-	return (temp);
+	i = 0;
+	if (arr)
+	{
+		while (arr[i])
+		{
+			if (arr[i])
+				free(arr[i]);
+			i++;
+		}
+		free(arr);
+	}
+	arr = NULL;
+}
+
+void	shelldelone(t_shell *shell)
+{
+	if (shell)
+	{
+		ft_free(shell->data);
+		free_2d_array(shell->switchs);
+		free(shell);
+		shell = NULL;
+	}
 }

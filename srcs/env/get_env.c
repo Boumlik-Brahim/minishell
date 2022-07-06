@@ -1,19 +1,18 @@
-#include"../../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_env.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/03 00:12:22 by haitkadi          #+#    #+#             */
+/*   Updated: 2022/07/05 16:42:22 by bbrahim          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	ft_env_size(t_env *env)
-{
-	t_env	*tmp;
-	int		i;
+#include "../../minishell.h"
 
-	i = 0;
-	tmp = env;
-	while (tmp)
-	{
-		i++;
-		tmp = tmp->next;
-	}
-	return (i);
-}
+/*----------------------------------------------------------------------------*/
 
 void	ft_envadd_back(t_env **lst, t_env *new)
 {
@@ -21,7 +20,7 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 
 	if (!new)
 	{
-		ft_free_env(*lst, 1);
+		free_env(lst, 1);
 		exit(-1);
 	}
 	tmp = *lst;
@@ -34,6 +33,8 @@ void	ft_envadd_back(t_env **lst, t_env *new)
 		tmp->next = new;
 	}
 }
+
+/*----------------------------------------------------------------------------*/
 
 t_env	*ft_envnew(char *key, char *value, bool print)
 {
@@ -49,6 +50,8 @@ t_env	*ft_envnew(char *key, char *value, bool print)
 	tmp->next = NULL;
 	return (tmp);
 }
+
+/*----------------------------------------------------------------------------*/
 
 void	ft_create_env(t_env **list, char **env)
 {
@@ -76,6 +79,8 @@ void	ft_create_env(t_env **list, char **env)
 	}
 }
 
+/*----------------------------------------------------------------------------*/
+
 char	*ft_getenv(t_env *env, char *buffer)
 {
 	t_env	*tmp;
@@ -92,6 +97,8 @@ char	*ft_getenv(t_env *env, char *buffer)
 	return (NULL);
 }
 
+/*----------------------------------------------------------------------------*/
+
 char	*get_keys(char *str, int c)
 {
 	char	*h;
@@ -100,7 +107,7 @@ char	*get_keys(char *str, int c)
 
 	h = (char *)str;
 	j = 0;
-	a = (char) c;
+	a = (char)c;
 	while (h[j] != a)
 		j++;
 	if (h[j] + 2 == 0)

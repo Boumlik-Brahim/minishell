@@ -72,4 +72,3 @@ char	**ft_split(char const *s, char c)
 	ft_split_util(&head, s, c);
 	return (ft_convert_array(&head));
 }
-

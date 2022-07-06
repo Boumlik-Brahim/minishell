@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 19:51:27 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/04 14:44:18 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/05 18:55:08 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,17 @@ void	ft_sort_exportab(char **res)
 		}
 	}
 }
+
+/* -------------------------------------------------------------------------- */
+
+void	ft_exprint(char	*key, char *value, int print)
+{
+	printf("declare -x %s", key);
+	if (print == 1 && value)
+		printf("=\"%s\"", value);
+	printf("\n");
+}
+
 /* -------------------------------------------------------------------------- */
 
 void	ft_print_export(t_env *env)
@@ -76,21 +87,12 @@ void	ft_print_export(t_env *env)
 		{
 			if (!ft_strcmp(res[i], current->key) && g_state.empty_env == true)
 			{
-				if (ft_strcmp(current->key, "PATH") && ft_strcmp(current->key, "_"))
-				{
-					printf("declare -x %s", current->key);
-					if (current->print == 1 && current->value)
-						printf("=\"%s\"", current->value);
-					printf("\n");
-				}
+				if (ft_strcmp(current->key, "PATH")
+					&& ft_strcmp(current->key, "_"))
+					ft_exprint(current->key, current->value, current->print);
 			}
 			else if (!ft_strcmp(res[i], current->key))
-			{
-				printf("declare -x %s", current->key);
-				if (current->print == 1 && current->value)
-					printf("=\"%s\"", current->value);
-				printf("\n");
-			}
+				ft_exprint(current->key, current->value, current->print);
 			current = current->next;
 		}
 	}

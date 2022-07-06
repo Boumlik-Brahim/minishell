@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokennew.c                                         :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/03 00:09:42 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/03 00:09:43 by haitkadi         ###   ########.fr       */
+/*   Created: 2021/07/01 16:52:53 by haitkadi          #+#    #+#             */
+/*   Updated: 2021/07/08 19:08:04 by haitkadi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "libft.h"
 
-#include "../../minishell.h"
-
-t_token	*tokennew(char *content, int token)
+int	ft_strcmp_tl(char *s1, char *s2)
 {
-	t_token	*temp;
+	unsigned char	*us1;
+	unsigned char	*us2;
+	int				i;
 
-	temp = (t_token *)malloc(sizeof(t_token));
-	if (!temp)
-		return (NULL);
-	temp->prev = NULL;
-	temp->token = token;
-	temp->content = content;
-	temp->next = NULL;
-	return (temp);
+	if (!s1 && !s2)
+		return (0);
+	if (!s1 || !s2)
+		return (1);
+	us1 = (unsigned char *) s1;
+	us2 = (unsigned char *) s2;
+	i = 0;
+	while (us1[i] && ft_tolower(us1[i]) == ft_tolower(us2[i]))
+		i++;
+	return (ft_tolower(us1[i]) - ft_tolower(us2[i]));
 }

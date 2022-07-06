@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/12 11:22:34 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/04 13:51:35 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/05 21:05:03 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	ft_unset(t_env **env, char **data)
 {
 	int	i;
 
+	if (data[1][0] == '_')
+		return (EXIT_SUCCESS);
 	i = 0;
 	while (data[++i])
 	{

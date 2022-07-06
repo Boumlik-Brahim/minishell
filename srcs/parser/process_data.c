@@ -1,44 +1,87 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   process_data.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/02 23:50:47 by haitkadi          #+#    #+#             */
+/*   Updated: 2022/07/02 23:50:49 by haitkadi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../minishell.h"
 
-void	store_data(t_shell **shell, int *files, t_shell *cmd, t_shell *here_doc)
+/*----------------------------------------------------------------------------*/
+
+void	store_data(t_shell **shell, int *args, t_shell *cmd, t_shell *here_doc)
 {
-	if (files[0] > -1)
-		shelladd_back(shell, shell_new(RED_IN, NULL, NULL, files[0]));
-	if (here_doc)
-		shelladd_back(shell, here_doc);
-	if (files[1] > -1)
-		shelladd_back(shell, shell_new(RED_OUT, NULL, NULL, files[1]));
+	if (args[2])
+	{
+		if (args[0] > -1)
+			shelladd_back(shell, shell_new(RED_IN, NULL, NULL, args[0]));
+		else if (args[0] == -1)
+			shelladd_back(shell, shell_new(INVALID_FILE, NULL, NULL, args[0]));
+		if (here_doc)
+			shelladd_back(shell, here_doc);
+	}
+	else
+	{
+		if (here_doc)
+			shelladd_back(shell, here_doc);
+		if (args[0] > -1)
+			shelladd_back(shell, shell_new(RED_IN, NULL, NULL, args[0]));
+		else if (args[0] == -1)
+			shelladd_back(shell, shell_new(INVALID_FILE, NULL, NULL, args[0]));
+	}
+	if (args[1] > -1)
+		shelladd_back(shell, shell_new(RED_OUT, NULL, NULL, args[1]));
+	else if (args[1] == -1)
+		shelladd_back(shell, shell_new(INVALID_FILE, NULL, NULL, args[1]));
 	if (cmd)
 		shelladd_back(shell, cmd);
 }
 
+/*----------------------------------------------------------------------------*/
+
+void	init_vars(int *args, t_shell **new_cmd, t_shell **here_docs)
+{
+	args[0] = -2;
+	args[1] = -2;
+	args[2] = 0;
+	*new_cmd = NULL;
+	*here_docs = NULL;
+}
+
+/*----------------------------------------------------------------------------*/
+
 void	process_data_util(t_shell **shell, t_token **token, t_env *env)
 {
-	char	is_cmd;
-	int		files[2];
-	t_shell *new_cmd;
+	int		args[3];
+	t_shell	*new_cmd;
 	t_shell	*here_docs;
 
-	new_cmd = NULL;
-	here_docs = NULL;
-	files[0] = -2;
-	files[1] = -2;
-	is_cmd = 0;	
+	init_vars(args, &new_cmd, &here_docs);
 	while (*token && (*token)->token != PIPE)
 	{
 		if (!new_cmd && (*token)->token == WORD)
 			new_cmd = get_cmd(env, *token);
 		else if ((*token)->token == RED_IN)
-			files[0] = open_file((*token)->content, RED_IN);
+			handle_files(args, (*token)->content, RED_IN);
 		else if ((*token)->token == RED_OUT || (*token)->token == RED_APPEND)
-			files[1] = open_file((*token)->content, (*token)->token);
+			handle_files(args, (*token)->content, (*token)->token);
 		else if ((*token)->token == HERE_DOC)
+		{
+			args[2] = 1;
 			shelladd_back(&here_docs, shell_new(HERE_DOC, \
 			ft_strdup((*token)->content), NULL, -1));
+		}
 		*token = (*token)->next;
 	}
-	store_data(shell, files, new_cmd, here_docs);
+	store_data(shell, args, new_cmd, here_docs);
 }
+
+/*----------------------------------------------------------------------------*/
 
 char	is_operator(t_token *token)
 {
@@ -48,6 +91,8 @@ char	is_operator(t_token *token)
 		|| (token->token == HERE_DOC)
 		|| (token->token == PIPE));
 }
+
+/*----------------------------------------------------------------------------*/
 
 char	process_data(t_shell **shell, t_token *token, t_env *env)
 {
@@ -63,5 +108,6 @@ char	process_data(t_shell **shell, t_token *token, t_env *env)
 		if (token)
 			token = token->next;
 	}
-	return 0;
+	return (0);
 }
+/*----------------------------------------------------------------------------*/

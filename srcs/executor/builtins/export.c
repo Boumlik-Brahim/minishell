@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 20:21:36 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/04 13:54:07 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/05 20:46:13 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,44 @@
 
 /* -------------------------------------------------------------------------- */
 
-void	ft_export_cases(t_env **env, char *data, int *j)
+int	ft_srch_key(t_env *env, char	*data, int j)
 {
-	while (data[*j] && data[*j] != '+' && data[*j] != '=')
-		(*j)++;
-	if (data[*j] == '+' && data[*j + 1] == '=')
+	char	*key;
+	t_env	*current;
+
+	key = ft_substr(data, 0, j);
+	current = env;
+	while (current)
 	{
-		if (ft_srch_key(*env, data, *j) == EXIT_SUCCESS)
-			ft_join_value(env, data, *j);
-		else
-			ft_export_env(env, data, *j, 1);
+		if (ft_strcmp(current->key, key) == 0)
+			return (EXIT_SUCCESS);
+		current = current->next;
 	}
-	else if (data[*j] == '=')
-	{
-		if (ft_srch_key(*env, data, *j) == EXIT_SUCCESS)
-			ft_add_value(env, data, *j);
-		else
-			ft_export_env(env, data, *j, 1);
-	}
+	return (EXIT_FAILURE);
+}
+
+/* -------------------------------------------------------------------------- */
+
+int	ft_chk_export(t_env **env, char	*data)
+{
+	int	i;
+
+	if (data[0] == '#')
+		ft_print_export(*env);
+	else if (!ft_isalpha(data[0]) && data[0] != '_')
+		return (EXIT_FAILURE);
 	else
 	{
-		if (ft_srch_key(*env, data, *j) == EXIT_SUCCESS)
-			return ;
-		else
-			ft_export_env(env, data, *j, 1);
+		i = -1;
+		while (data[++i])
+		{
+			if ((data[i] == '+' && data[i + 1] == '=') || (data[i] == '='))
+				return (EXIT_SUCCESS);
+			else if (!ft_isalnum(data[i]) && data[i] != '_')
+				return (EXIT_FAILURE);
+		}
 	}
+	return (EXIT_SUCCESS);
 }
 
 /* -------------------------------------------------------------------------- */
