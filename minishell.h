@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 01:42:17 by bbrahim           #+#    #+#             */
-/*   Updated: 2022/07/06 22:26:49 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 23:57:01 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ char	check_operators_syntax(t_token *token);
 char	check_pipe_syntax(t_token *token);
 char	is_redirection(t_token *token);
 char	check_errors(t_token *token);
+char	is_expandable(char *line, int i);
 char	*expender(char *line, int *i, t_env *env);
 char	*word_within_dqoutes(char *line, int *i, t_env *env, t_token *token);
 char	*word_within_sqoutes(char *line, int *i);

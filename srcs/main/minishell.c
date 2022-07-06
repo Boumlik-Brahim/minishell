@@ -6,7 +6,7 @@
 /*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 02:38:45 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/06 22:36:11 by bbrahim          ###   ########.fr       */
+/*   Updated: 2022/07/06 23:59:02 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ int	main(int ac, char **av, char **main_env)
 	while (1)
 	{
 		hide_ctrl_char();
-		line = readline("minishell$> ");
+		line = readline("Minishell> ");
 		if (!line)
 			break ;
 		else if (line[0] == '\n')
 		{
-			free(line);
+			ft_free(line);
 			continue ;
 		}
 		if (line[0] != '\0')

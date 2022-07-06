@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   get_word.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 23:24:57 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/02 23:24:59 by haitkadi         ###   ########.fr       */
+/*   Updated: 2022/07/06 23:52:19 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+/*----------------------------------------------------------------------------*/
+
+char	is_expandable(char *line, int i)
+{
+	if (line[i] == '$' && (ft_isalnum(line[i +1]) || line[i +1] == '_'))
+		return (1);
+	return (0);
+}
 
 /*----------------------------------------------------------------------------*/
 
@@ -49,8 +58,7 @@ char	get_word(t_token **token, char *line, int *i, t_env *env)
 		}
 		else if (line[*i] == '\'')
 			content = word_within_sqoutes(line, i);
-		else if (!check_last(*token, HERE_DOC) && line[*i] == '$' \
-			&& (ft_isalnum(line[*i +1]) || line[*i +1] == '_'))
+		else if (!check_last(*token, HERE_DOC) && is_expandable(line, *i))
 			content = expender(line, i, env);
 		else if (ft_isascii(line[*i]) && !ft_strchr("| <>", line[*i]))
 			content = word(line, i);

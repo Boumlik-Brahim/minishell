@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd_util.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 23:42:57 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/02 23:43:02 by haitkadi         ###   ########.fr       */
+/*   Updated: 2022/07/06 23:37:44 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,5 @@ char	check_cmd_permissions(char *cmd)
 			return (1);
 		}
 	}
-	put_error(cmd, "No such file or directory", 1);
 	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_word_util.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: haitkadi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: bbrahim <bbrahim@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/02 23:22:43 by haitkadi          #+#    #+#             */
-/*   Updated: 2022/07/02 23:22:45 by haitkadi         ###   ########.fr       */
+/*   Updated: 2022/07/06 23:51:12 by bbrahim          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*word_within_dqoutes(char *line, int *i, t_env *env, t_token *token)
 			*i += 1;
 			break ;
 		}
-		if (!check_last(token, HERE_DOC) && line[*i] == '$')
+		if (!check_last(token, HERE_DOC) && is_expandable(line, *i))
 			substring = expender(line, i, env);
 		else
 			substring = get_chunk(line, i);
