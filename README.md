@@ -37,3 +37,13 @@ The minishell program supports many of the basic shell functionalities, such as:
 # Conclusion:
 
 The minisheell project is a useful and practical project at 42 that will help you to gain a better understanding of how shell commands work and how to write a simple command-line interpreter. By completing this project, you will gain a deeper understanding of how to create programs that interact with the command line, and how to use basic Unix functionalities to create more complex programs.
+
+# Contributors:
+
+- Hssain Aitkadir (okadir).
+
+    [Hssain Aitkadir](https://github.com/okadir)
+
+- Brahim Boumlik (Boumlik-Brahim).
+
+    [Brahim Boumlik](https://github.com/Boumlik-Brahim)
